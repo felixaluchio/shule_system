@@ -61,7 +61,7 @@ echo "<br>";
 echo "<a href='form.php'>Add Student</a>";
 echo "<br>";
 
-//search field
+
 echo "<form action='index.php' method='get'>";
 echo "<input type='text' name='search'>";
 echo "<button type='submit'>Search</button>";
