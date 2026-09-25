@@ -1,7 +1,20 @@
 <?php
+session_start();
 include "dbcon.php";
 
-//pagination
+if (isset($_SESSION['message'])) {
+  $message = $_SESSION['message'];
+  unset($_SESSION['message']);
+} else {
+  $message = "";
+}
+
+if (!empty($message)) {
+  echo htmlspecialchars($message);
+}
+
+
+
 $studentsPerPage = 10;
 if (isset($_GET['page'])) {
   $page = $_GET['page'];
@@ -37,7 +50,7 @@ $row = mysqli_fetch_assoc($countResult);
 $totalStudents = $row["total"];
 $totalPages = ceil($totalStudents / $studentsPerPage);
 
-if ($page > $totalPages && $totalPages>0) {
+if ($page > $totalPages && $totalPages > 0) {
   $page = $totalPages;
 }
 
@@ -110,9 +123,9 @@ if (mysqli_num_rows($studentResult) > 0) {
   }
 
   for ($i = 1; $i <= $totalPages; $i++) {
-    if($i==$page){
+    if ($i == $page) {
       echo "<strong>$i</strong>";
-    }else{
+    } else {
       echo "<a href = 'index.php?search=" . urlencode($search) . "&page=$i'>&nbsp;" . $i . "&nbsp;</a>";
     }
   }

@@ -1,47 +1,49 @@
 <?php
- include "dbcon.php";
+session_start();
 
-if(isset($_POST['submit'])){
-$name = trim($_POST['name']);
- if( preg_match("[0-9]", $name)){
+include "dbcon.php";
+
+if (isset($_POST['submit'])) {
+  $name = trim($_POST['name']);
+  if (preg_match("[0-9]", $name)) {
     echo "Invalid name";
     exit();
   }
- if(strlen($name) < 3){
-  echo "The name should have at least three characters";
-      exit();
- }
+  if (strlen($name) < 3) {
+    echo "The name should have at least three characters";
+    exit();
+  }
 
-$email = filter_var($_POST['email'],FILTER_VALIDATE_EMAIL);   
-   if($email===false){
+  $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+  if ($email === false) {
     echo "Invalid email address";
     exit();
-   }
+  }
 
-$course = trim($_POST['course']);
- if(strlen($course)<3){
-  echo "Course must have at least three characters";
-  exit();
- }
- if (preg_match("[^A-Za-z .]",$course)) {
-  echo "invalid Course";
-  exit();
- }
+  $course = trim($_POST['course']);
+  if (strlen($course) < 3) {
+    echo "Course must have at least three characters";
+    exit();
+  }
+  if (preg_match("[^A-Za-z .]", $course)) {
+    echo "invalid Course";
+    exit();
+  }
 
-  if(empty($name)||empty($email)||empty($course)){
+  if (empty($name) || empty($email) || empty($course)) {
     echo "All fields are required";
     exit();
   }
   $sql = "INSERT INTO student(name,email,course)VALUES(?,?,?)";
-  $stmt = mysqli_prepare($conn,$sql);
-  mysqli_stmt_bind_param($stmt,"sss",$name,$email,$course);
+  $stmt = mysqli_prepare($conn, $sql);
+  mysqli_stmt_bind_param($stmt, "sss", $name, $email, $course);
   $result = mysqli_stmt_execute($stmt);
 
-  if($result){
+  if ($result) {
+    $_SESSION['message'] = "student added successfully";
     header("Location: index.php");
-  }else{
+    exit();
+  } else {
     echo "Submission failed: " . mysqli_stmt_error($stmt);
+  }
 }
-}
-
-?>
