@@ -8,11 +8,11 @@
 <body>
   <form action = "create.php" method="POST">
   <label>Name: </label>
-  <input type = "text" name = "name" placeholder = "Name"><br>
+  <input type = "text" name = "name" placeholder = "Name" required><br>
   <label>Email: </label>
-  <input type = "email" name = "email" placeholder = "Email"><br>
+  <input type = "email" name = "email" placeholder = "Email" required><br>
   <label>Course: </label>
-  <input type = "text" name = "course" placeholder = "Course"><br>
+  <input type = "text" name = "course" placeholder = "Course" required><br>
   <button type="submit" name="submit">Add Student</button>
 </form>
 </body>

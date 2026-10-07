@@ -1,10 +1,11 @@
 <?php
 session_start();
 include "dbcon.php";
+if(isset($_POST['submit'])){
 
 $id = $_POST['id'];
 $name = trim($_POST['name']);
-if (preg_match("[0-9]", $name)) {
+if (preg_match("/[0-9]/", $name)) {
   echo "Invalid name";
   exit();
 }
@@ -19,7 +20,11 @@ if ($email === false) {
 }
 
 $course = trim($_POST['course']);
-if (preg_match("[^A-Za-z .]", $course)) {
+if (strlen($course) < 3) {
+    echo "Course must have at least three characters";
+    exit();
+  }
+if (preg_match("/[^A-Za-z .]/", $course)) {
   echo "Invalid course";
   exit();
 }
@@ -39,4 +44,6 @@ if ($result) {
   exit();
 } else {
   echo "Update failed: " . mysqli_stmt_error($stmt);
+}
+
 }

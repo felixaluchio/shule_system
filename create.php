@@ -1,11 +1,10 @@
 <?php
 session_start();
-
 include "dbcon.php";
 
 if (isset($_POST['submit'])) {
   $name = trim($_POST['name']);
-  if (preg_match("[0-9]", $name)) {
+  if (preg_match("/[0-9]/", $name)) {
     echo "Invalid name";
     exit();
   }
@@ -25,7 +24,7 @@ if (isset($_POST['submit'])) {
     echo "Course must have at least three characters";
     exit();
   }
-  if (preg_match("[^A-Za-z .]", $course)) {
+  if (preg_match("/[^A-Za-z .]/", $course)) {
     echo "invalid Course";
     exit();
   }
