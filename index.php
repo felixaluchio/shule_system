@@ -37,7 +37,7 @@ if (isset($_GET['search'])) {
   $search = trim($_GET['search']);
    if(strlen($search) > 100){
     $search = substr($search, 0, 100);
-    echo "<input type='text' name='search' value='" . htmlspecialchars($search) . "'>";
+    
    }
 } else {
   $search = "";
@@ -98,7 +98,7 @@ echo "<br>";
 
 
 echo "<form action='index.php' method='get'>";
-echo "<input type='text' name='search'>";
+echo "<input type='text' name='search' value='" . htmlspecialchars($search) . "'>";
 echo "<button type='submit'>Search</button>";
 echo "</form>";
 
