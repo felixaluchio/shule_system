@@ -172,6 +172,9 @@ if (mysqli_num_rows($studentResult) > 0) {
 
   
 } else {
-
-  echo "No data found";
+    if ($search != "") {
+        echo "No student found matching " . htmlspecialchars($search);
+    } else {
+        echo "No students found";
+    }
 }
