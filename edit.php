@@ -1,5 +1,5 @@
 <?php
-include "dbcon.php";
+require_once "dbcon.php";
  
 if(!isset($_GET['id'])){
   echo "ID is required";

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "dbcon.php";
+require_once "dbcon.php";
 
 if (isset($_SESSION['message'])) {
   $message = $_SESSION['message'];
