@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once "dbcon.php";
+include "validation.php";
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $name = trim($_POST['name'] ?? '');
@@ -9,10 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
     if (empty($name) || empty($email) || empty($course)) {
         die("All fields are required");
-    }
-
-    if (preg_match("/[0-9]/", $name) || strlen($name) < 3) {
-        die("Invalid name: must be at least 3 characters and contain no numbers");
     }
 
     if (!$email) {

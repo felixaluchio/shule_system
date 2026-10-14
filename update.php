@@ -1,18 +1,13 @@
 <?php
 session_start();
 require_once "dbcon.php";
+include "validation.php";
+
 if(isset($_POST['submit'])){
 
 $id = $_POST['id'];
 $name = trim($_POST['name']);
-if (preg_match("/[0-9]/", $name)) {
-  echo "Invalid name";
-  exit();
-}
-if (strlen($name) < 3) {
-  echo "The name should have at least three characters";
-  exit();
-}
+
 $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
 if ($email === false) {
   echo "Invalid email address";
