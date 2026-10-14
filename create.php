@@ -12,14 +12,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     if (empty($name) || empty($email) || empty($course)) {
         die("All fields are required");
     }
-
-    if (!$email) {
-        die("Invalid email address");
+ $nameError = validateName($name);
+    if($nameError){
+        die($nameError);
     }
+   
 
-    if (strlen($course) < 3 || preg_match("/[^A-Za-z .]/", $course)) {
-        die("Invalid course: must be at least 3 characters and contain only letters, spaces, and periods");
+    $emailError = validateEmail($email);
+    if($emailError){
+        die($emailError);
     }
+    
+    $courseError = validateCourse($course);
+
+    if($courseError){
+        die($courseError);
+    }
+    
 
     $sql = "INSERT INTO student (name, email, course) VALUES (?, ?, ?)";
     $stmt = mysqli_prepare($conn, $sql);

@@ -7,22 +7,19 @@ if(isset($_POST['submit'])){
 
 $id = $_POST['id'];
 $name = trim($_POST['name']);
-
-$email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
-if ($email === false) {
-  echo "Invalid email address";
-  exit();
-}
-
+$email = $_POST['email'];
 $course = trim($_POST['course']);
-if (strlen($course) < 3) {
-    echo "Course must have at least three characters";
-    exit();
+
+$emailError = validateEmail($email);
+  if($emailError){
+    die($emailError);
   }
-if (preg_match("/[^A-Za-z .]/", $course)) {
-  echo "Invalid course";
-  exit();
-}
+
+  $courseError = validateCourse($course);
+  if($courseError){
+    die($courseError);
+  }
+
 
 if (empty($name) || empty($email) || empty($course)) {
   echo "All fields must be filled";

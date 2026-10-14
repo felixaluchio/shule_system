@@ -6,7 +6,7 @@ if(!isset($_GET['id'])){
   exit();
 }
 
-$id = $_GET['id'];
+ $id = $_GET['id'];
  $sql = "SELECT * FROM student WHERE id = ?";
  $stmt = mysqli_prepare($conn,$sql);
  mysqli_stmt_bind_param($stmt,"i",$id);
