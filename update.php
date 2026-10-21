@@ -7,9 +7,13 @@ if(isset($_POST['submit'])){
 
 $id = $_POST['id'];
 $name = trim($_POST['name']);
-$email = $_POST['email'];
+$email = trim($_POST['email']);
 $course = trim($_POST['course']);
 
+$nameError = validateName($name);
+  if($nameError){
+    die($nameError);
+  }
 $emailError = validateEmail($email);
   if($emailError){
     die($emailError);
