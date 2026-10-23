@@ -35,6 +35,7 @@ $students = [
   ["name" => "John", "email" => "john@example.com"],
   ["name" => "felix", "email" => "felix@example.com"]
 ];
+
 $students[] = ["name" => "Joe", "email" => "joe@example.com"];
 
 echo "<table>" ;
