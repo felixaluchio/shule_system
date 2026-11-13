@@ -13,8 +13,6 @@ if (!empty($message)) {
   echo htmlspecialchars($message);
 }
 
-
-
 $studentsPerPage = 10;
 if (isset($_GET['page'])) {
   $page = $_GET['page'];
@@ -31,21 +29,19 @@ if ($page < 1) {
   $page = 1;
 }
 
-
-//search
+// search
 if (isset($_GET['search'])) {
   $search = trim($_GET['search']);
-   if(strlen($search) > 100){
+  if (strlen($search) > 100) {
     $search = substr($search, 0, 100);
-    
-   }
+  }
 } else {
   $search = "";
 }
 
 $searchTerm = "%" . $search . "%";
 
-$sql = "SELECT COUNT(*) AS total FROM student  WHERE name LIKE ? OR email LIKE ? OR course LIKE ?";
+$sql = "SELECT COUNT(*) AS total FROM student WHERE name LIKE ? OR email LIKE ? OR course LIKE ?";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, "sss", $searchTerm, $searchTerm, $searchTerm);
 mysqli_stmt_execute($stmt);
@@ -60,24 +56,26 @@ if ($page > $totalPages && $totalPages > 0) {
 
 $offset = ($page - 1) * $studentsPerPage;
 
-if (isset($_GET['sort'])){
-    $sort = $_GET['sort'];
-  }else{
-    $sort = "name";
-  }
-
-if(!in_array($sort, ["name","email","course"])){
+if (isset($_GET['sort'])) {
+  $sort = $_GET['sort'];
+} else {
   $sort = "name";
 }
 
-if (isset($_GET['order'])){
+if (!in_array($sort, ["name", "email", "course"])) {
+  $sort = "name";
+}
+
+if (isset($_GET['order'])) {
   $order = $_GET['order'];
-}else{
+} else {
   $order = "asc";
 }
-if(!in_array($order, ["asc","desc"])){
+
+if (!in_array($order, ["asc", "desc"])) {
   $order = "asc";
 }
+
 $sql = "SELECT * FROM student WHERE name LIKE ? OR email LIKE ? OR course LIKE ? ORDER BY $sort $order LIMIT ? OFFSET ?";
 
 $stmt = mysqli_prepare($conn, $sql);
@@ -96,25 +94,24 @@ echo "<br>";
 echo "<a href='form.php'>Add Student</a>";
 echo "<br>";
 
-
 echo "<form action='index.php' method='get'>";
 echo "<input type='text' name='search' value='" . htmlspecialchars($search) . "'>";
 echo "<button type='submit'>Search</button>";
 echo "</form>";
 
-echo "<form action = 'index.php' method = 'get'>";
-echo "<input type='hidden' name='search' value='". htmlspecialchars($search) ."'>";
+echo "<form action='index.php' method='get'>";
+echo "<input type='hidden' name='search' value='" . htmlspecialchars($search) . "'>";
 echo "<label>Sort By: </label>";
-echo "<select name = 'sort'>";
-echo "<option value ='name'" . ($sort == "name" ? " selected" : "") . ">name</option>";
-echo "<option value ='email'" . ($sort == "email" ? " selected" : "") . ">email</option>";
-echo "<option value ='course'" . ($sort == "course" ? " selected" : "") . ">course</option>";
+echo "<select name='sort'>";
+echo "<option value='name'" . ($sort == "name" ? " selected" : "") . ">name</option>";
+echo "<option value='email'" . ($sort == "email" ? " selected" : "") . ">email</option>";
+echo "<option value='course'" . ($sort == "course" ? " selected" : "") . ">course</option>";
 echo "</select>";
-echo  "<label>Order: </label>";
-echo "<select name = 'order'>";
+echo "<label>Order: </label>";
+echo "<select name='order'>";
 echo "<option value='asc'" . ($order == "asc" ? " selected" : "") . ">Ascending</option>";
 echo "<option value='desc'" . ($order == "desc" ? " selected" : "") . ">Descending</option>";
-echo "</select>";  
+echo "</select>";
 
 echo "<button type='submit'>Sort</button>";
 echo "</form>";
@@ -144,10 +141,10 @@ if (mysqli_num_rows($studentResult) > 0) {
 
     echo "<a href='edit.php?id=" . $student["id"] . "'>Edit</a>";
 
-    echo "<a href='delete.php?id=" . $student["id"] . "'
-        onclick=\"return confirm('Are you sure you want to delete this student?');\">
-        Delete
-        </a>";
+    echo "<form action='delete.php' method='post'>";
+    echo "<input type='hidden' name='id' value='" . htmlspecialchars($student["id"]) . "'>";
+    echo "<button type='submit' name='delete'>Delete</button>";
+    echo "</form>";
 
     echo "</td>";
 
@@ -158,27 +155,27 @@ if (mysqli_num_rows($studentResult) > 0) {
 
   if ($page > 1) {
     $previousPage = $page - 1;
-    echo "<a href='index.php?search=" . urlencode($search) . "&page=$previousPage&sort=". urlencode($sort). "&order=". urlencode($order). "'>Previous</a>&nbsp;";
+    echo "<a href='index.php?search=" . urlencode($search) . "&page=$previousPage&sort=" . urlencode($sort) . "&order=" . urlencode($order) . "'>Previous</a>&nbsp;";
   }
 
   for ($i = 1; $i <= $totalPages; $i++) {
     if ($i == $page) {
       echo "<strong>$i</strong>";
     } else {
-      echo "<a href = 'index.php?search=" . urlencode($search) . "&page=$i&sort=". urlencode($sort) . "&order=" .urlencode($order). "'>&nbsp;" . $i . "&nbsp;</a>";
+      echo "<a href='index.php?search=" . urlencode($search) . "&page=$i&sort=" . urlencode($sort) . "&order=" . urlencode($order) . "'>&nbsp;" . $i . "&nbsp;</a>";
     }
   }
 
   if ($page < $totalPages) {
     $nextPage = $page + 1;
-    echo "&nbsp;<a href='index.php?search=" . urlencode($search) . "&page=$nextPage&sort=". urlencode($sort). "&order=". urlencode($order). "'>Next</a>";
+    echo "&nbsp;<a href='index.php?search=" . urlencode($search) . "&page=$nextPage&sort=" . urlencode($sort) . "&order=" . urlencode($order) . "'>Next</a>";
   }
 
-  
 } else {
-    if ($search != "") {
-        echo "No student found matching " . htmlspecialchars($search);
-    } else {
-        echo "No students found";
-    }
+  if ($search != "") {
+    echo "No student found matching " . htmlspecialchars($search);
+  } else {
+    echo "No students found";
+  }
 }
+?>

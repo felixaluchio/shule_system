@@ -31,22 +31,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     
 
     $sql = "INSERT INTO student (name, email, course) VALUES (?, ?, ?)";
+    try{
     $stmt = mysqli_prepare($conn, $sql);
-    
-    if ($stmt) {
         mysqli_stmt_bind_param($stmt, "sss", $name, $email, $course);
         $result = mysqli_stmt_execute($stmt);
-
-        if ($result) {
-            $_SESSION['message'] = "Student added successfully";
+     $_SESSION['message'] = "Student added successfully";
             header("Location: index.php");
-            exit();
-        } else {
-            die("Submission failed: " . mysqli_stmt_error($stmt));
-        }
-        
-        mysqli_stmt_close($stmt);
-    } else {
-        die("Database error: could not prepare statement");
+            exit ();
+    } catch (mysqli_sql_exception $e) {
+        error_log("Database error: " . $e->getMessage());
+        echo "Something went wrong. Please try again later.";
+        exit();
     }
 }
