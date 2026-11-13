@@ -8,15 +8,20 @@ if(!isset($_GET['id'])){
 $id = $_GET['id'];
 
 $sql = "DELETE FROM student WHERE id = ?";
+try{
 $stmt = mysqli_prepare($conn,$sql);
 mysqli_stmt_bind_param($stmt,"i",$id);
 $result = mysqli_stmt_execute($stmt);
-if($result){
+}catch(mysqli_sql_exception $e){
+  error_log("Database error: ". $e->getMessage());
+
+  echo "Something went wrong. Please try again later.";
+  exit();
+}
+
+
   $_SESSION['message'] = "Student deleted successfully";
   header("Location: index.php");
-  exit();
-}else{
-  echo "student not deleted: ".mysqli_stmt_error($stmt);
-}
+  
 
 ?>
